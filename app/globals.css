@@ -1,0 +1,149 @@
+@import "tailwindcss";
+
+@theme {
+  /* Color system — dark mode is a "midnight vault": true dark-blue ground
+     with a confident azure signal accent and indigo for gradient depth.
+     Light mode ("ledger") deliberately isn't a paler version of this — it's
+     a warm parchment surface with navy text, carrying the same azure/gold
+     accents across. Gold is reserved for awards in both modes. */
+  --color-bg: #05070f;
+  --color-bg-soft: #080b16;
+  --color-panel: #0e1420;
+  --color-panel-2: #131a2b;
+  --color-border: rgba(219, 230, 255, 0.08);
+  --color-border-strong: rgba(219, 230, 255, 0.15);
+  --color-text: #edf1fb;
+  --color-text-muted: #94a1c4;
+  --color-text-faint: #566388;
+  --color-signal: #4f8cff;
+  --color-signal-soft: rgba(79, 140, 255, 0.14);
+  --color-signal-2: #8ab4ff;
+  --color-violet: #7c6fff;
+  --color-violet-soft: rgba(124, 111, 255, 0.14);
+  --color-amber: #d9a455;
+  --color-amber-soft: rgba(217, 164, 85, 0.14);
+
+  --font-display: var(--font-display-src), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-body-src), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-src), ui-monospace, "SFMono-Regular", monospace;
+
+  --animate-scan: scan 4s linear infinite;
+  --animate-pulse-dot: pulse-dot 2.4s ease-in-out infinite;
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes scan {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(100%);
+    }
+  }
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      opacity: 1;
+      box-shadow: 0 0 0 0 var(--color-signal-soft);
+    }
+    50% {
+      opacity: 0.7;
+      box-shadow: 0 0 0 6px transparent;
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Light mode — "ledger": a warm parchment surface, not another shade of
+   white or blue. Navy text and the same azure/gold accents carry the brand
+   across from dark mode, but the base hue is deliberately its own thing. */
+html.light {
+  --color-bg: #ece3d0;
+  --color-bg-soft: #e2d7bf;
+  --color-panel: #f8f3e6;
+  --color-panel-2: #e6dcc5;
+  --color-border: rgba(56, 44, 20, 0.14);
+  --color-border-strong: rgba(56, 44, 20, 0.22);
+  --color-text: #201a10;
+  --color-text-muted: #6b6045;
+  --color-text-faint: #9c8f6e;
+  --color-signal: #2354d6;
+  --color-signal-soft: rgba(35, 84, 214, 0.13);
+  --color-signal-2: #16367f;
+  --color-violet: #5644d1;
+  --color-violet-soft: rgba(86, 68, 209, 0.13);
+  --color-amber: #8a5c0a;
+  --color-amber-soft: rgba(138, 92, 10, 0.15);
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+}
+
+::selection {
+  background: var(--color-signal-soft);
+  color: var(--color-signal-2);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Circuit-grid ambient background used behind the hero and section seams */
+.grid-field {
+  background-image:
+    linear-gradient(var(--color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 20%, black 40%, transparent 100%);
+}
+
+.glass {
+  background: color-mix(in srgb, var(--color-panel) 70%, transparent);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-border);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-panel-2);
+  border-radius: 8px;
+  border: 2px solid var(--color-bg);
+}
