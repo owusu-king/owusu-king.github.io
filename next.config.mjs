@@ -1,13 +1,23 @@
 /**
  * GitHub Pages deployment config.
  *
- * Set REPO_NAME to your actual repository name (used for basePath/assetPrefix)
- * unless you're deploying to a root user/org page (username.github.io), in
- * which case set it to an empty string.
+ * basePath is required for a PROJECT page (served from
+ * username.github.io/repo-name) and must be EMPTY for a USER/ORG page
+ * (served from username.github.io, which comes from a repo literally named
+ * `username.github.io`).
+ *
+ * Getting this backwards is the classic Pages failure: index.html still
+ * loads, so you see unstyled text, but every /_next/* asset 404s because it
+ * is requested one directory too deep. The build stays green — nothing in it
+ * verifies that the baked-in URLs resolve.
+ *
+ * A repo whose name ends in `.github.io` is always a user/org page, so that
+ * case is detected here rather than left to be configured by hand.
  */
 const REPO_NAME = process.env.REPO_NAME ?? "portfolio";
+const isUserOrOrgPage = REPO_NAME.toLowerCase().endsWith(".github.io");
 const isProd = process.env.NODE_ENV === "production";
-const basePath = isProd && REPO_NAME ? `/${REPO_NAME}` : "";
+const basePath = isProd && REPO_NAME && !isUserOrOrgPage ? `/${REPO_NAME}` : "";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
